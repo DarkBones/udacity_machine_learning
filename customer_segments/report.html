@@ -12545,7 +12545,8 @@ pzQAAADAaQReAAAAOI3ACwAAAKcReAEAAOA0Ai8AAACc9v8BQhCINZ5Yw5EAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>I tried predicting the feature <strong>Delicatessen</strong>. This gave me a score of <strong>-8.661</strong> which indicated that the model is not successful in trying to predict how much a customer spends on Delicatessen based on the other 5 features. This implies that Delicatessen is an important feature.</p>
+<p>I tried predicting the feature <strong>Delicatessen</strong>. This gave me a score of <strong>-8.661</strong> which indicated that the model is not successful in trying to predict how much a customer spends on Delicatessen based on the other 5 features. This implies that Delicatessen is an important feature and we shouldn't omit it.</p>
+<p>It's worth investigating features to see if removing them helps or hurts the model. Just because a feature may have correlations to other features, doesn't mean we should remove it.</p>
 
 </div>
 </div>
@@ -20077,7 +20078,7 @@ The following data points are considered outliers for more than one feature:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>These data points should be removed as they fall outside of the expected range and will skew our analysis when clustering the data into segments.</p>
+<p>These data points should be removed as they fall outside of the expected range and will skew our analysis when clustering the data into segments. These outliers represent samples that are very unlikely to occur. This is why we don't want them to influence our model.</p>
 
 </div>
 </div>
@@ -20494,11 +20495,12 @@ IjGowyQiIiIiIhKDOkwiIiIiIiIx/D9bctzZ4xBNvwAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>The first two principal components explain <strong>72.5%</strong> of the variance in the data and the first four principal components explain <strong>92.8%</strong> of the variance.</p>
-<p>The primary components represent patterns in spending, rather than individual customers. The components are sorted by how much of the variance in the data is explained by them.</p>
-<p>The first component, that explains 49.9% of the variance, is a pattern of above average spending on <strong>Milk</strong>, <strong>Grocery</strong> and <strong>Detergents_Paper</strong>.</p>
-<p>The second component (22.6%) represents above average spending on <strong>Fresh</strong>, <strong>Frozen</strong> and <strong>Delicatessen</strong>.</p>
-<p>The third component (10.5%) represents a pattern of above average spending on <strong>Frozen</strong> and <strong>Delicatessen</strong>, but also very low spending on <strong>Fresh</strong> and <strong>Detergents_Paper</strong>.</p>
-<p>The fourth component (9.8%) represents above average spending on <strong>Fresh</strong> and <strong>Delicatessen</strong> and also very low spending on <strong>Frozen</strong> and below average spending on <strong>Detergents_Paper</strong>.</p>
+<p>The primary components represent relationships between spending categories, rather than actual spending amounts per category.</p>
+<p>The first dimension shows a strong relationship between <strong>Milk</strong>, <strong>Grocery</strong> and <strong>Detergents_Paper</strong>. This means that customers with a high value in the first primary component show the same relationship in spending between categories. If they are spending a lot of money on Milk, they are spending even more on Detergents_Paper, and if they are spending much less than the average on Grocery, they are also spending much less on Milk and Detergents_Paper. Customers with a low value in this primary component are showing this relationship to a lesser extent or not at all.</p>
+<p>The second dimension represents a relationship between <strong>Fresh</strong>, <strong>Frozen</strong> and <strong>Delicatessen</strong>. Like the first primary component, customers with a high value in this dimension are showing this relationship in their spending stronger than customers with a lower value in this dimension.</p>
+<p>The third dimension shows an inverse relationship between <strong>Fresh</strong> and <strong>Delicatessen</strong>, meaning that customers with a high value in this dimension are spending less on <strong>Delicatessen</strong> the more they are spending on <strong>Fresh</strong>, and the more they spend on <strong>Delicatessen</strong>, the less they spend on <strong>Fresh</strong>.</p>
+<p>The fourth dimension is a lot like the third dimension in that it shows an inverse relationship between features, but this time for <strong>Frozen</strong> and <strong>Delicatessen</strong>.</p>
+<p>Customers can have a combination of these primary components. For instance, they might have equally high values for the first and third dimensions, meaning that they show a strong relationship between <strong>Detergents_Paper</strong> and <strong>Milk</strong>, but they also show a strong inverse relationship between <strong>Fresh</strong> and <strong>Delicatessen</strong>.</p>
 
 </div>
 </div>
@@ -21834,7 +21836,7 @@ AkoAAAAAQCwElAAAAACAWP4/1d9sUe3wJowAAAAASUVORK5CYII=
 <p>The below animation shows how this works in practice:</p>
 <p><img src="gmm_animation.gif" alt="gmm"></p>
 <p><strong>Model selection</strong></p>
-<p>I will implement the <strong>GMM</strong> model. As many establishments can be multiple things (such as a deli section in a supermarket), I expect the GMM model to better reflect the data as it's able to assign datapoint to more than 1 cluster.</p>
+<p>I will implement the <strong>GMM</strong> model. As many establishments can be multiple things (such as a deli section in a supermarket), I expect the GMM model to better reflect the data as it's able to assign datapoint to more than 1 cluster. K-means will assume that the clusters are spherical, which I don't expect to be the case in our data. Our dataset is also quite small, so GMM will be very efficient.</p>
 
 </div>
 </div>
