@@ -11961,7 +11961,7 @@ Run the agent.py file after setting the flags from projects/smartcab folder inst
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_no-learning&#39; log file from the initial simulation results</span>
@@ -13160,7 +13160,7 @@ The driving agent makes bad decisions between 35 and 45% of the time. Around 10%
 <p><strong>Answer:</strong></p>
 <p><strong>Safety:</strong> <em>Inputs</em>. Traffic lights and knowing the directions of other cars play a crucial role in traffic safety. Not being able to conform to this traffic regulation would result in a highly unsafe cab.</p>
 <p><strong>Efficiency:</strong> <em>Waypoint</em>. The waypoint is there to guide the cab towards its destination. Without it, there is nowhere for the cab to drive to.</p>
-<p>I don't consider the <em>deadline</em> feature to be crucial in safety or efficiency. Reaching the destination within a certain time limit is important, but if used incorrectly, it might result in the cab ignoring traffic regulations in order to meet this deadline, which compromises safety. It would be better for the cab to reach its destination late than to causing accidents.</p>
+<p>I don't consider the <em>deadline</em> feature to be crucial in safety or efficiency. Reaching the destination within a certain time limit is important, but if used incorrectly, it might result in the cab ignoring traffic regulations in order to meet this deadline, which compromises safety. It would be better for the cab to reach its destination late than to causing accidents. If the cab just follows the waypoints, it's already taking the shortest path, so it won't affect efficiency. Furthermore, if we were to include the <em>deadline</em> feature, it will massively increase the state space as there are many different values that this feature can have.</p>
 
 </div>
 </div>
@@ -13261,7 +13261,7 @@ The driving agent makes bad decisions between 35 and 45% of the time. Around 10%
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_default-learning&#39; file from the default Q-Learning simulation</span>
@@ -14524,7 +14524,7 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_improved-learning&#39; file from the improved Q-Learning simulation</span>
@@ -16335,7 +16335,8 @@ B1hmZmZmZmYt4gDLzMzMzMysRf4/kQLTxo0gc5MAAAAASUVORK5CYII=
 <p><strong>Answer:</strong></p>
 <p>The exploration factor <em>e</em> decayed by <em>0.999</em> to the power of <em>t</em> where <em>t</em> increased by 1 after each trial. This caused <em>e</em> to decay very slowly, allowing the agent to explore many actions for many states and documenting the associated rewards. The agent went through over 5000 training trials before finally moving on to testing.</p>
 <p>The <em>epsilon-tolerance</em> flag was decreased to <em>0.005</em> to allow the agent to explore and train a little longer.</p>
-<p>Since the agent had a lot of time to explore a lot of actions for many situations, it was able to come up with a good policy this time and received a final rating of <strong>A+</strong> for both safety and reliability.</p>
+<p>The <em>alpha</em> variable is not included in the decay function in my implementation. However, it is still being used in the reward calculation. I choose not to set the alpha too small, to avoid a decreased varience in Q values (i.e. 2 different Q values might get rounded off to the same number, even though one of them is slightly better than the other).</p>
+<p>Since the agent had a lot of time to explore a lot of actions for many situations, it was able to come up with a good policy this time and received a final rating of <strong>A+</strong> for both safety and reliability where the default Q-Learner had a score of <strong>F</strong> for both.</p>
 
 </div>
 </div>
@@ -16392,7 +16393,7 @@ B1hmZmZmZmYt4gDLzMzMzMysRf4/kQLTxo0gc5MAAAAASUVORK5CYII=
 <li><strong>None: </strong> <strong>1.55</strong></li>
 </ul>
 <h3 id="Summary:">Summary:<a class="anchor-link" href="#Summary:">&#182;</a></h3><p>The waypoint is to the right and the traffic light is red. There is a car to the left of the agent that intents to go right and there's an oncoming car that also intents to go right. As the traffic light is red, any movement will be a violation.</p>
-<p>Interestingly, the agent probably only came across this exact state once. The fact that all actions except for 1 have a reward of 0.00 is an indication of this. Since the agent never saw this situation before, it randomly chose to take the <em>None</em> action, which happened to be the correct thing to do. The next time the agent sees this situation, it will know that taking this action will result in the highest reward, so there's no need to try any other action.</p>
+<p>Interestingly, the agent probably only came across this exact state once. The fact that all actions except for 1 have a reward of 0.00 is an indication of this. Since the agent never saw this situation before, it randomly chose to take the <em>None</em> action. Taking this action is not optimal, as the agent would have been better off going to the left.</p>
 <h2 id="Example-3">Example 3<a class="anchor-link" href="#Example-3">&#182;</a></h2><h3 id="State:">State:<a class="anchor-link" href="#State:">&#182;</a></h3><p>'right', 'green', 'right', 'forward', 'right'</p>
 <h3 id="Actions:">Actions:<a class="anchor-link" href="#Actions:">&#182;</a></h3><ul>
 <li><strong>Forward:</strong> <strong>0.74</strong></li>
@@ -16432,7 +16433,7 @@ B1hmZmZmZmYt4gDLzMzMzMysRf4/kQLTxo0gc5MAAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p><strong>Environment:</strong> The environment changes with every trial. There is a new destination, other cars are spawned randomly and the traffic lights are randomly red or green. Because of this, it makes no sense to have a long term reward for a particular position on the grid.</p>
-<p><strong>Smartcab:</strong> At the start of each trial, the starting postion of the Smartcab is chosen randomly. This means that it isn't useful for the smartcab to remember rewards that are specific to earlier trials.</p>
+<p><strong>Smartcab:</strong> The agent only receives information relative to itself; what is immediately around the car and where the car should go next. It never receives information about its location on the grid relative to where the destination is or information about cars and traffic lights that are further away. The notion of <em>future rewards</em> doesn't mean anything to the agent as it's Markovian in nature.</p>
 
 </div>
 </div>
